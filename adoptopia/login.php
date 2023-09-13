@@ -18,7 +18,7 @@
 
   <main>
     <!-- Formulário de login -->
-    <form>
+    <form action="processar_login.php" method="POST">
       <h2>Faça Login</h2>
       <!-- Campos do formulário -->
       <input type="email" name="email" placeholder="E-mail" required>

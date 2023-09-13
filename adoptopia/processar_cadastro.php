@@ -2,8 +2,8 @@
 // Configurações do banco de dados
 $servername = "localhost";
 $username = "root";
-$password = "Cefet@2023";
-$dbname = "adopt";
+$password = "";
+$dbname = "sistemaadopt";
 
 // Conexão com o banco de dados
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -13,31 +13,45 @@ if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Dados do formulário de cadastro
-$nomeAnimal = $_POST['nome'];
-$especie = $_POST['especie'];
-$raca = $_POST['raca'];
-$idade = $_POST['idade'];
-$genero = $_POST['genero'];
-$descricao = $_POST['descricao'];
-$foto = $_FILES['foto']['name'];
-$foto_temp = $_FILES['foto']['tmp_name'];
-$ID_Doador = 1; // Substitua pelo ID do doador (usuário) real
-$disponivelParaAdocao = true; // Defina o status de disponibilidade
+// Processamento do formulário
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nome = $_POST["nome"];
+    $especie = $_POST["especie"];
+    $raca = $_POST["raca"];
+    $idade = $_POST["idade"];
+    $genero = $_POST["genero"];
+    $descricao = $_POST["descricao"];
 
-// Move a foto para o diretório desejado (por exemplo, 'uploads/')
-$destino = 'uploads/' . $foto;
-move_uploaded_file($foto_temp, $destino);
+    // Tratamento da foto
+    $foto = null;
+    //verificamos se um arquivo de imagem foi enviado no formulário
+    if (isset($_FILES["foto"]) && $_FILES["foto"]["error"] == 0) {
+        $foto = $_FILES["foto"]["name"];
+        move_uploaded_file($_FILES["foto"]["tmp_name"], "uploads/" . $foto);
+    }
 
-// Prepara a instrução SQL
-$stmt = $conn->prepare("INSERT INTO Animais (NomeAnimal, Espécie, Raça, Idade, Gênero, Descrição, Foto, ID_Doador, DisponivelParaAdoção) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("sssiisssb", $nomeAnimal, $especie, $raca, $idade, $genero, $descricao, $foto, $ID_Doador, $disponivelParaAdocao);
+    // Prepara a instrução SQL para inserção
+    $stmt = $conn->prepare("INSERT INTO Animais (nome, especie, raca, idade, genero, descricao, foto) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-// Executa a inserção
-if ($stmt->execute() === TRUE) {
-    echo "Cadastro do animal realizado com sucesso!";
+    // Verifica se a preparação foi bem-sucedida
+    if ($stmt) {
+        // Define os parâmetros e seus tipos
+        $stmt->bind_param("sssiiss", $nome, $especie, $raca, $idade, $genero, $descricao, $foto);
+
+        // Executa a inserção
+        if ($stmt->execute() === TRUE) {
+            echo "Cadastro do animal realizado com sucesso!";
+        } else {
+            echo "Erro ao cadastrar o animal: " . $stmt->error;
+        }
+
+        // Fecha a declaração preparada
+        $stmt->close();
+    } else {
+        echo "Erro na preparação da declaração SQL.";
+    }
 } else {
-    echo "Erro ao cadastrar: " . $conn->error;
+    echo "O formulário não foi enviado corretamente.";
 }
 
 // Fecha a conexão com o banco de dados
