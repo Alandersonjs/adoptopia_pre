@@ -15,8 +15,6 @@
       <a href="cadastro.php">Cadastro</a>
     </nav>
   </header>
-
-  <main>
     <!-- Formulário de cadastro -->
     <form action="processar_cadastro.php" method="POST" enctype="multipart/form-data">
       <h2>Cadastre um Animal para Adoção</h2>
@@ -31,10 +29,12 @@
       </select>
       <textarea name="descricao" placeholder="Descrição do Animal" required></textarea>
       <input type="file" name="foto" required>
-      <button type="submit">Cadastrar</button>
+      <button type="submit">Cadastrar animal</button>
     </form>
   </main>
+<!-- ... Cabeçalho e outras partes do HTML ... -->
 
+<!-- ... Rodapé e outras partes do HTML ... -->
   <footer>
     <p>Adoptopia - Todos os direitos reservados</p>
   </footer>

@@ -8,11 +8,12 @@
 </head>
 <body>
   <header>
-    <h1>AdotePetz</h1>
+    <h1>Adoptopia</h1>
     <!-- Links para login e cadastro -->
     <nav>
       <a href="login.php">Login</a>
-      <a href="cadastro.php">Cadastro</a>
+      <a href="cadastro_usuarios.html">Cadastro de Usuários</a>
+      <a href="cadastro_animais.php">Cadastro de Animais</a>
     </nav>
   </header>
 
@@ -34,6 +35,13 @@
     <section class="filtros">
       <h2>Encontre um Animal</h2>
       <!-- Formulário com filtros de busca -->
+      <form action="processar_busca.php" method="GET">
+        <!-- Adicione os campos de filtro aqui -->
+        <input type="text" name="nome_animal" placeholder="Nome do Animal">
+        <input type="text" name="especie" placeholder="Espécie">
+        <input type="text" name="raca" placeholder="Raça">
+        <button type="submit">Buscar</button>
+      </form>
     </section>
 
     <!-- Lista de animais disponíveis -->
