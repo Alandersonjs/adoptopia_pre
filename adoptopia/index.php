@@ -50,6 +50,33 @@
       <!-- Lista de todos os animais disponíveis -->
       <div class="animal-card">
         <!-- Informações do animal -->
+        <?php
+          // Conecte-se ao banco de dados e recupere o caminho da imagem do animal em destaque
+          $servername = "localhost";
+          $username = "root";
+          $password = "";
+          $dbname = "sistemaadopt";
+
+          $conn = new mysqli($servername, $username, $password, $dbname);
+
+          if ($conn->connect_error) {
+              die("Conexão falhou: " . $conn->connect_error);
+          }
+
+          $sql = "SELECT foto FROM Animais WHERE id = 2"; // Suponha que o animal em destaque tenha o ID 2
+          $result = $conn->query($sql);
+
+          if ($result->num_rows > 0) {
+              while ($row = $result->fetch_assoc()) {
+                  $fotoCaminho = $row["foto"];
+                  echo "<img src='$fotoCaminho' alt='Animal em Destaque'>";
+              }
+          } else {
+              echo "Nenhum animal em destaque encontrado.";
+          }
+
+          $conn->close();
+        ?>
       </div>
       <div class="animal-card">
         <!-- Informações do animal -->
